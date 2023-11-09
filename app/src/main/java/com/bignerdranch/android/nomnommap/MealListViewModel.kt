@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-private const val TAG = "CrimeListViewModel"
+private const val TAG = "MealListViewModel"
 
 class MealListViewModel : ViewModel() {
     private val mealRepository = MealRepository.get()

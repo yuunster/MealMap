@@ -4,4 +4,5 @@
     <string name="meal_title_label">Title</string>
     <string name="meal_details_label">Details</string>
     <string name="new_meal">New Meal</string>
+    <string name="show_meal_list">History</string>
 </resources>

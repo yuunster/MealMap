@@ -3,8 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mealListFragment">
+    app:startDestination="@id/mealMapFragment">
 
+    <fragment
+        android:id="@+id/mealMapFragment"
+        android:name="com.bignerdranch.android.nomnommap.MealMapFragment"
+        android:label="MealMapFragment"
+        tools:layout="@layout/fragment_meal_map">
+        <action
+            android:id="@+id/show_meal_detail"
+            app:destination="@id/mealDetailFragment" />
+        <action
+            android:id="@+id/show_meal_list"
+            app:destination="@id/mealListFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/mealListFragment"
         android:name="com.bignerdranch.android.nomnommap.MealListFragment"

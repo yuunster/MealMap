@@ -17,6 +17,7 @@ class MealHolder(
         val formattedTime = SimpleDateFormat("hh:mm a", Locale.US)
         binding.mealDate.text = formattedDate.format(meal.date).toString()
         binding.mealTime.text = formattedTime.format(meal.date).toString()
+        //TODO: Implement meal photo to appear on MealListFragment
         binding.mealPhoto
 
         binding.root.setOnClickListener {

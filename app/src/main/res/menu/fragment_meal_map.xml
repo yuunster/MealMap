@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/show_meal_list"
+        android:icon="@drawable/ic_menu_history"
+        android:title="@string/show_meal_list"
+        app:showAsAction="ifRoom|withText"/>
+</menu>
