@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/new_meal"
-        android:icon="@drawable/ic_menu_add"
-        android:title="@string/new_meal"
+        android:id="@+id/show_map"
+        android:icon="@drawable/ic_menu_map"
+        android:title="@string/show_map"
         app:showAsAction="ifRoom|withText"/>
 </menu>

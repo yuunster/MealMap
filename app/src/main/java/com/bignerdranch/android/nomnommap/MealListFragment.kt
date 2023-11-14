@@ -20,11 +20,10 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 
-private const val TAG = "CrimeListFragment"
+private const val TAG = "MealListFragment"
 
 class MealListFragment : Fragment() {
     private var _binding: FragmentMealListBinding? = null
-    private var job: Job? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -77,25 +76,13 @@ class MealListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.new_meal -> {
-                showNewMeal()
+            R.id.show_map -> {
+                findNavController().navigate(
+                    MealListFragmentDirections.showMap()
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-    private fun showNewMeal() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            val newMeal = Meal(
-                id = UUID.randomUUID(),
-                title = "",
-                date = Date(),
-                description = ""
-            )
-            mealListViewModel.addMeal(newMeal)
-            findNavController().navigate(
-                MealListFragmentDirections.showMealDetail(newMeal.id)
-            )
         }
     }
 }
