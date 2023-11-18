@@ -7,22 +7,19 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.FileProvider
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.bignerdranch.android.nomnommap.databinding.FragmentMealDetailBinding
 import com.bignerdranch.android.nomnommap.databinding.FragmentMealMapBinding
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import kotlinx.coroutines.launch
-import java.io.File
 import java.util.Date
 import java.util.UUID
 
-class MealMapFragment : Fragment() {
+
+class MealMapFragment : Fragment(), OnMapReadyCallback {
+    private lateinit var googleMap: GoogleMap
     private var _binding: FragmentMealMapBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
@@ -34,6 +31,7 @@ class MealMapFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,8 +50,19 @@ class MealMapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.map.onCreate(savedInstanceState)
+        binding.map.onResume()
+
+        binding.map.getMapAsync(this)
+
         binding.logMeal.setOnClickListener {
             showNewMeal()
+        }
+    }
+
+    override fun onMapReady(map: GoogleMap) {
+        map.let{
+            googleMap = it
         }
     }
 
