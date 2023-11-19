@@ -10,6 +10,8 @@ data class Meal(
     @PrimaryKey val id: UUID,
     val title: String,
     val date: Date,
-    val description: String = "",
-    val photoFileName: String? = null
+    val calories: String,
+    val proteins: String,
+    val carbs: String,
+    val fats: String
 )

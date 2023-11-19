@@ -89,7 +89,10 @@ class MealMapFragment : Fragment(), OnMapReadyCallback {
                 id = UUID.randomUUID(),
                 title = "",
                 date = Date(),
-                description = ""
+                calories = "",
+                proteins = "",
+                carbs = "",
+                fats = "",
             )
             mealRepository.addMeal(newMeal)
             findNavController().navigate(
