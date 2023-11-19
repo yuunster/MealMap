@@ -5,6 +5,8 @@
     <uses-feature android:name="android.hardware.camera"
         android:required="false"/>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="com.bignerdranch.android.nomnommap.NomNomMapApplication"
         android:allowBackup="true"
@@ -31,6 +33,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/files"/>
         </provider>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}"/>
     </application>
 
     <queries>

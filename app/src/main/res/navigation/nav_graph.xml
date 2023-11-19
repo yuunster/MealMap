@@ -24,6 +24,9 @@
         android:label="MealListFragment"
         tools:layout="@layout/fragment_meal_list">
         <action
+            android:id="@+id/show_map"
+            app:destination="@id/mealMapFragment" />
+        <action
             android:id="@+id/show_meal_detail"
             app:destination="@id/mealDetailFragment" />
     </fragment>
