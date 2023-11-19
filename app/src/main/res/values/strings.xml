@@ -5,5 +5,16 @@
     <string name="meal_details_label">Details</string>
     <string name="new_meal">New Meal</string>
     <string name="show_meal_list">History</string>
+    <string name="meal_name">Meal Name:</string>
+    <string name="calories">Calories:</string>
+    <string name="proteins">Proteins:</string>
+    <string name="carbs">Carbohydrates:</string>
+    <string name="fats">Fats:</string>
+    <string name="name">name</string>
+    <string name="amount">amount</string>
+    <string name="clear_button_txt">Clear All</string>
+    <string name="submit_button_txt">Submit</string>
+    <color name="green">#76C6A9</color>
+    <color name="light_green">#C5E7DB</color>
     <string name="show_map">Map</string>
 </resources>
