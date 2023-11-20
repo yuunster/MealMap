@@ -30,11 +30,6 @@ class MealListFragment : Fragment() {
         }
     private val mealListViewModel: MealListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,22 +62,5 @@ class MealListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.fragment_meal_list, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.show_map -> {
-                findNavController().navigate(
-                    MealListFragmentDirections.showMap()
-                )
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 }
