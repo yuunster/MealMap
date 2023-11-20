@@ -10,10 +10,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bignerdranch.android.nomnommap.databinding.FragmentMealMapBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,6 +24,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -33,11 +35,6 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     private lateinit var googleMap: GoogleMap
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
-    companion object{
-        private const val LOCATION_REQUEST_CODE = 1
-    }
-
     private var _binding: FragmentMealMapBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
@@ -45,9 +42,12 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         }
     private val mealRepository = MealRepository.get()
 
+    companion object{
+        private const val LOCATION_REQUEST_CODE = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
     }
 
@@ -95,7 +95,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
             return
         }
         googleMap.isMyLocationEnabled = true
@@ -113,23 +113,6 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         val markerOptions = MarkerOptions().position(currentLatLong)
         markerOptions.title("Your Current Location: $currentLatLong")
         googleMap.addMarker(markerOptions)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.fragment_meal_map, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.show_meal_list -> {
-                findNavController().navigate(
-                    MealMapFragmentDirections.showMealList()
-                )
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun showNewMeal() {
