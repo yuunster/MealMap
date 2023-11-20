@@ -20,9 +20,12 @@ tools:context=".MainActivity">
 		android:id="@+id/bottom_nav_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:background="@color/green"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:menu="@menu/nav_menu"/>
+		app:menu="@menu/nav_menu"
+		app:itemTextColor="@drawable/icon_tint"
+		app:itemIconTint="@drawable/icon_tint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

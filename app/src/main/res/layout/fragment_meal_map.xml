@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".MealMapFragment">
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/nav_menu"
+        app:itemTextColor="@drawable/icon_tint"
+        app:itemIconTint="@drawable/icon_tint"/>
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="0dp"
@@ -20,12 +32,12 @@
         android:id="@+id/log_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/green"
-        android:text="Log Meal"
+        android:text="@string/log_meal_button_txt"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/map"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
