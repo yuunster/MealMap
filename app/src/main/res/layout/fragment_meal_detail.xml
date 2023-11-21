@@ -4,14 +4,14 @@
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/light_green"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="130dp"
         android:layout_height="55dp"
-        android:backgroundTint="@color/light_green"
+        android:backgroundTint="@color/dark_green"
         android:text="@string/submit_button_txt"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -27,7 +27,7 @@
         android:layout_width="130dp"
         android:layout_height="55dp"
         android:layout_marginStart="64dp"
-        android:backgroundTint="@color/light_green"
+        android:backgroundTint="@color/dark_green"
         android:text="@string/clear_button_txt"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -119,10 +119,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:inputType="number"
         android:ems="10"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintHorizontal_bias="0.29"
         app:layout_constraintStart_toEndOf="@+id/caloriesTextView"
         app:layout_constraintTop_toBottomOf="@+id/editMealName" />
 
