@@ -16,6 +16,4 @@
     <string name="clear_button_txt">Clear All</string>
     <string name="submit_button_txt">Submit</string>
     <string name="log_meal_button_txt">Log Meal</string>
-    <color name="green">#76C6A9</color>
-    <color name="light_green">#C5E7DB</color>
 </resources>
