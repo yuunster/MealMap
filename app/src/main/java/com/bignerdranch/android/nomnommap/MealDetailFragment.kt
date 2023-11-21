@@ -65,6 +65,14 @@ class MealDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
+            clearButton.setOnClickListener {
+                editMealName.setText("")
+                editCalories.setText("")
+                editProteins.setText("")
+                editCarbs.setText("")
+                editFats.setText("")
+            }
+
             editMealName.doOnTextChanged { text, _, _, _ ->
                 mealDetailViewModel.updateMeal { oldMeal ->
                     oldMeal.copy(title = text.toString())
