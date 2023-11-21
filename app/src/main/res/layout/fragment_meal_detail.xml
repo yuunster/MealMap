@@ -4,129 +4,139 @@
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/light_green"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="130dp"
         android:layout_height="55dp"
-        android:backgroundTint="@color/light_green"
+        android:backgroundTint="@color/dark_green"
         android:text="@string/submit_button_txt"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toEndOf="@+id/clearButton"
         app:layout_constraintTop_toBottomOf="@+id/editFats"
-        app:layout_constraintVertical_bias="0.138" />
+        app:layout_constraintVertical_bias="0.13" />
 
     <Button
         android:id="@+id/clearButton"
         android:layout_width="130dp"
         android:layout_height="55dp"
-        android:backgroundTint="@color/light_green"
+        android:layout_marginStart="64dp"
+        android:backgroundTint="@color/dark_green"
         android:text="@string/clear_button_txt"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/submitButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editFats"
+        app:layout_constraintTop_toBottomOf="@+id/fatsTextView"
         app:layout_constraintVertical_bias="0.138" />
 
     <TextView
         android:id="@+id/mealTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="136dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/meal_name"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24000001" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/caloriesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/calories"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/mealTextView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mealTextView" />
 
     <TextView
         android:id="@+id/proteinsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/proteins"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/caloriesTextView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/caloriesTextView" />
 
     <TextView
         android:id="@+id/carbsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/carbs"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/proteinsTextView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/proteinsTextView" />
 
     <TextView
         android:id="@+id/fatsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-black"
         android:text="@string/fats"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/carbsTextView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/carbsTextView" />
 
     <EditText
         android:id="@+id/editMealName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:ems="10"
+        android:layout_marginTop="128dp"
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/mealTextView"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toEndOf="@+id/mealTextView"
-        app:layout_constraintTop_toTopOf="@+id/mealTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editMealName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintStart_toEndOf="@+id/caloriesTextView"
         app:layout_constraintTop_toBottomOf="@+id/editMealName" />
 
     <EditText
         android:id="@+id/editProteins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="20dp"
-        android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editCalories"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toEndOf="@+id/proteinsTextView"
         app:layout_constraintTop_toBottomOf="@+id/editCalories" />
 
     <EditText
@@ -134,9 +144,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editProteins"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toEndOf="@+id/carbsTextView"
         app:layout_constraintTop_toBottomOf="@+id/editProteins" />
 
     <EditText
@@ -144,9 +156,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editCarbs"
+        android:ems="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toEndOf="@+id/fatsTextView"
         app:layout_constraintTop_toBottomOf="@+id/editCarbs" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
