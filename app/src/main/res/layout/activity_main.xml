@@ -27,5 +27,4 @@ tools:context=".MainActivity">
 		app:menu="@menu/nav_menu"
 		app:itemTextColor="@drawable/icon_tint"
 		app:itemIconTint="@drawable/icon_tint" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

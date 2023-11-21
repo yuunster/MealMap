@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">NomNomMap</string>
     <string name="meal_title_hint">Enter a title for the meal.</string>
-    <string name="meal_title_label">Title</string>
-    <string name="meal_details_label">Details</string>
+    <string name="meal_title_label">Meal Title</string>
+    <string name="meal_time_label">Meal Time</string>
+    <string name="meal_date_label">Meal Date</string>
     <string name="new_meal">New Meal</string>
     <string name="menu_map">Map</string>
     <string name="menu_history">History</string>
