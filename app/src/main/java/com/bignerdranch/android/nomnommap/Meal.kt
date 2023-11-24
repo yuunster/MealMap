@@ -13,5 +13,6 @@ data class Meal(
     val calories: String,
     val proteins: String,
     val carbs: String,
-    val fats: String
+    val fats: String,
+    val photoFileName: String? = null
 )

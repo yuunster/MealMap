@@ -1,9 +1,14 @@
 package com.bignerdranch.android.nomnommap
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +18,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.bignerdranch.android.nomnommap.databinding.FragmentMealDetailBinding
 import kotlinx.coroutines.launch
+import java.io.File
+import java.util.Date
 
 class MealDetailFragment : Fragment() {
     private var _binding: FragmentMealDetailBinding? = null
@@ -25,6 +32,18 @@ class MealDetailFragment : Fragment() {
     private val mealDetailViewModel: MealDetailViewModel by viewModels {
         MealDetailViewModelFactory(args.mealId)
     }
+
+    private val takePhoto = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { didTakePhoto: Boolean ->
+        if (didTakePhoto && photoName != null) {
+            mealDetailViewModel.updateMeal { oldMeal ->
+                oldMeal.copy(photoFileName = photoName)
+            }
+        }
+    }
+
+    private var photoName: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,6 +117,24 @@ class MealDetailFragment : Fragment() {
                     oldMeal.copy(fats = text.toString())
                 }
             }
+
+            pictureButton.setOnClickListener {
+                photoName = "IMG_${Date()}.JPG"
+                val photoFile = File(requireContext().applicationContext.filesDir,
+                    photoName)
+                val photoUri = FileProvider.getUriForFile(
+                    requireContext(),
+                    "com.bignerdranch.android.nomnommap.fileprovider",
+                    photoFile
+                )
+                takePhoto.launch(photoUri)
+            }
+
+            val captureImageIntent = takePhoto.contract.createIntent(
+                requireContext(),
+                null
+            )
+            pictureButton.isEnabled = canResolveIntent(captureImageIntent)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -107,5 +144,15 @@ class MealDetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun canResolveIntent(intent: Intent): Boolean {
+        val packageManager: PackageManager = requireActivity().packageManager
+        val resolvedActivity: ResolveInfo? =
+            packageManager.resolveActivity(
+                intent,
+                PackageManager.MATCH_DEFAULT_ONLY
+            )
+        return resolvedActivity != null
     }
 }
