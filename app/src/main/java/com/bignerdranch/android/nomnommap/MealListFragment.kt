@@ -47,12 +47,14 @@ class MealListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mealListViewModel.meals.collect{ crimes ->
+                mealListViewModel.meals.collect{ meals ->
                     binding.mealRecyclerView.adapter =
-                        MealListAdapter(crimes) { crimeId ->
-                            findNavController().navigate(
-                                MealListFragmentDirections.showMealDetail(crimeId)
-                            )
+                        context?.let {
+                            MealListAdapter(meals, it) { mealId ->
+                                findNavController().navigate(
+                                    MealListFragmentDirections.showMealDetail(mealId)
+                                )
+                            }
                         }
                 }
             }

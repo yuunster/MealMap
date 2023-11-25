@@ -1,15 +1,19 @@
 package com.bignerdranch.android.nomnommap
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.nomnommap.databinding.ListItemMealBinding
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
 
 class MealHolder(
-    private val binding: ListItemMealBinding
+    private val binding: ListItemMealBinding,
+    private val context: Context
 ) : RecyclerView.ViewHolder(binding.root){
     fun bind(meal: Meal, onMealClicked: (mealId: UUID) -> Unit) {
         binding.mealTitle.text = meal.title
@@ -17,17 +21,39 @@ class MealHolder(
         val formattedTime = SimpleDateFormat("hh:mm a", Locale.US)
         binding.mealDate.text = formattedDate.format(meal.date).toString()
         binding.mealTime.text = formattedTime.format(meal.date).toString()
-        //TODO: Implement meal photo to appear on MealListFragment
-        binding.mealPhoto
+        updatePhoto(meal.photoFileName)
 
         binding.root.setOnClickListener {
             onMealClicked(meal.id)
+        }
+    }
+
+    private fun updatePhoto(photoFileName: String?) {
+        if (binding.mealPhoto.tag != photoFileName) {
+            val photoFile = photoFileName?.let {
+                File(context.applicationContext.filesDir, it)
+            }
+            if (photoFile?.exists() == true) {
+                binding.mealPhoto.doOnLayout { measuredView ->
+                    val scaledBitmap = getScaledBitmap(
+                        photoFile.path,
+                        measuredView.width,
+                        measuredView.height
+                    )
+                    binding.mealPhoto.setImageBitmap(scaledBitmap)
+                    binding.mealPhoto.tag = photoFileName
+                }
+            } else {
+                binding.mealPhoto.setImageBitmap(null)
+                binding.mealPhoto.tag = null
+            }
         }
     }
 }
 
 class MealListAdapter(
     private val meals: List<Meal>,
+    private val context: Context,
     private val onMealClicked: (mealId: UUID) -> Unit
 ) : RecyclerView.Adapter<MealHolder>() {
     override fun onCreateViewHolder(
@@ -36,7 +62,7 @@ class MealListAdapter(
     ): MealHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemMealBinding.inflate(inflater, parent, false)
-        return MealHolder(binding)
+        return MealHolder(binding, context)
     }
 
     override fun onBindViewHolder(holder: MealHolder, position: Int) {
