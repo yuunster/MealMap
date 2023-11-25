@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.view.doOnLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -77,6 +78,7 @@ class MealDetailFragment : Fragment() {
             if (editFats.text.toString() != meal.fats.toString()) {
                 meal.fats.let { editFats.setText(it) }
             }
+            updatePhoto(meal.photoFileName)
         }
     }
 
@@ -154,5 +156,27 @@ class MealDetailFragment : Fragment() {
                 PackageManager.MATCH_DEFAULT_ONLY
             )
         return resolvedActivity != null
+    }
+
+    private fun updatePhoto(photoFileName: String?) {
+        if (binding.mealPicture.tag != photoFileName) {
+            val photoFile = photoFileName?.let {
+                File(requireContext().applicationContext.filesDir, it)
+            }
+            if (photoFile?.exists() == true) {
+                binding.mealPicture.doOnLayout { measuredView ->
+                    val scaledBitmap = getScaledBitmap(
+                        photoFile.path,
+                        measuredView.width,
+                        measuredView.height
+                    )
+                    binding.mealPicture.setImageBitmap(scaledBitmap)
+                    binding.mealPicture.tag = photoFileName
+                }
+            } else {
+                binding.mealPicture.setImageBitmap(null)
+                binding.mealPicture.tag = null
+            }
+        }
     }
 }
