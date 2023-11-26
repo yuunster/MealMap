@@ -32,6 +32,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(supportActionBar!=null)
+            this.supportActionBar?.hide();
         _binding =
             ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root

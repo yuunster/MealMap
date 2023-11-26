@@ -32,6 +32,8 @@ class RegisterActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(supportActionBar!=null)
+            this.supportActionBar?.hide();
         _binding =
             ActivityRegisterBinding.inflate(layoutInflater)
         val view = binding.root
