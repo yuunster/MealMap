@@ -125,6 +125,8 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 proteins = "",
                 carbs = "",
                 fats = "",
+                latitude = currentLocation.latitude,
+                longitude = currentLocation.longitude
             )
             mealRepository.addMeal(newMeal)
             findNavController().navigate(

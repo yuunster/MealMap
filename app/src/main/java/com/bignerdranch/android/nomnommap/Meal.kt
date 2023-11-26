@@ -2,6 +2,7 @@ package com.bignerdranch.android.nomnommap
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
 import java.util.Date
 import java.util.UUID
 
@@ -13,5 +14,7 @@ data class Meal(
     val calories: String,
     val proteins: String,
     val carbs: String,
-    val fats: String
+    val fats: String,
+    val latitude: Double,
+    val longitude: Double
 )
