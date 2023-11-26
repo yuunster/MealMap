@@ -5,9 +5,11 @@ import androidx.room.Room
 import com.bignerdranch.android.nomnommap.database.MealDatabase
 import com.bignerdranch.android.nomnommap.database.migration_1_2
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 private const val DATABASE_NAME = "meal-database"
@@ -27,7 +29,7 @@ class MealRepository private constructor(
 
     fun getMeals(): Flow<List<Meal>>
         = database.mealDao().getMeals()
-    suspend fun getMeal(id: UUID): Meal = database.mealDao().getMeal(id)
+    suspend fun getMeal(id: UUID): Meal = withContext(Dispatchers.IO) { database.mealDao().getMeal(id) }
 
     fun updateMeal(meal: Meal) {
         coroutineScope.launch {

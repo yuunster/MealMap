@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "142898951247",
+    "project_id": "nomnommap-a639e",
+    "storage_bucket": "nomnommap-a639e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142898951247:android:c2ad7cbd01bca00050a63a",
+        "android_client_info": {
+          "package_name": "com.bignerdranch.android.nomnommap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsTdYmRECgaXlHLZx9mZ_dXqa2s_drMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -16,4 +16,13 @@
         app:showAsAction="ifRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </menu>

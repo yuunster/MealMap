@@ -32,4 +32,10 @@
             android:name="mealId"
             app:argType="java.util.UUID" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.bignerdranch.android.nomnommap.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
 </navigation>

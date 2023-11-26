@@ -18,4 +18,12 @@
     <string name="submit_button_txt">Submit</string>
     <string name="log_meal_button_txt">Log Meal</string>
     <string name="picture_prompt">Take a picture of your meal here!</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="profile">Profile</string>
+    <string name="log_out">Log out</string>
 </resources>
