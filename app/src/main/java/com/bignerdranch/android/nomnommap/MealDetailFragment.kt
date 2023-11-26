@@ -94,6 +94,19 @@ class MealDetailFragment : Fragment() {
                 editFats.setText("")
             }
 
+            submitButton.setOnClickListener {
+                mealDetailViewModel.updateMeal { oldMeal ->
+                    oldMeal.copy(
+                        title = editMealName.text.toString(),
+                        calories = editCalories.text.toString(),
+                        proteins = editProteins.text.toString(),
+                        carbs = editCarbs.text.toString(),
+                        fats = editFats.text.toString()
+                    )
+                }
+                activity?.onBackPressed()
+            }
+
             editMealName.doOnTextChanged { text, _, _, _ ->
                 mealDetailViewModel.updateMeal { oldMeal ->
                     oldMeal.copy(title = text.toString())
