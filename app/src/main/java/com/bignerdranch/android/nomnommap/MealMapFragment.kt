@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -76,6 +77,9 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
         binding.logMeal.setOnClickListener {
             showNewMeal()
+            
+            //print latitude and longitude to console
+            Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
         }
     }
 
