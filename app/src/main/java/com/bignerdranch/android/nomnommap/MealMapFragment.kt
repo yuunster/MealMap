@@ -13,7 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bignerdranch.android.nomnommap.databinding.FragmentMealMapBinding
@@ -37,6 +40,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var _binding: FragmentMealMapBinding? = null
+    private val mealListViewModel: MealListViewModel by viewModels()
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -77,7 +81,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
         binding.logMeal.setOnClickListener {
             showNewMeal()
-            
+
             //print latitude and longitude to console
             Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
         }
@@ -107,15 +111,27 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             if (location != null){
                 currentLocation = location
                 val currentLatLong = LatLng(location.latitude, location.longitude)
-                placeMarkerOnMap(currentLatLong)
+                //placeMarkerOnMap(currentLatLong)
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 12f))
+            }
+        }
+
+        //Creates a coroutine and places markers on map for each meal in database
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mealListViewModel.meals.collect{ meals ->
+                    for (meal in meals) {
+                        val tempLatLng = LatLng(meal.latitude, meal.longitude)
+                        placeMarkerOnMap(tempLatLng, meal.title)
+                    }
+                }
             }
         }
     }
 
-    private fun placeMarkerOnMap(currentLatLong: LatLng) {
+    private fun placeMarkerOnMap(currentLatLong: LatLng, name: String) {
         val markerOptions = MarkerOptions().position(currentLatLong)
-        markerOptions.title("Your Current Location: $currentLatLong")
+        markerOptions.title(name)
         googleMap.addMarker(markerOptions)
     }
 
