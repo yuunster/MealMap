@@ -10,11 +10,12 @@
     <string name="meal_name">Meal Name:</string>
     <string name="calories">Calories:</string>
     <string name="proteins">Proteins:</string>
-    <string name="carbs">Carbohydrates:</string>
+    <string name="carbs">Carbs:</string>
     <string name="fats">Fats:</string>
     <string name="name">name</string>
     <string name="amount">amount</string>
     <string name="clear_button_txt">Clear All</string>
     <string name="submit_button_txt">Submit</string>
     <string name="log_meal_button_txt">Log Meal</string>
+    <string name="picture_prompt">Take a picture of your meal here!</string>
 </resources>

@@ -17,4 +17,5 @@ data class Meal(
     val fats: String,
     val latitude: Double,
     val longitude: Double
+    val photoFileName: String? = null
 )
