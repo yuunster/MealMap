@@ -6,9 +6,6 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
@@ -17,7 +14,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bignerdranch.android.nomnommap.databinding.FragmentMealMapBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -25,11 +21,10 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -37,15 +32,15 @@ import java.util.UUID
 
 class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private lateinit var googleMap: GoogleMap
+    private var mapFragment: SupportMapFragment? = null
     private lateinit var currentLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var _binding: FragmentMealMapBinding? = null
-    private val mealListViewModel: MealListViewModel by viewModels()
+    private val mealMapViewModel: MealMapViewModel by viewModels()
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
-    private val mealRepository = MealRepository.get()
 
     companion object{
         private const val LOCATION_REQUEST_CODE = 1
@@ -63,6 +58,10 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     ): View? {
         _binding =
             FragmentMealMapBinding.inflate(layoutInflater, container, false)
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment?.getMapAsync(this)
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.map, mapFragment!!)
+            ?.commit()
         return binding.root
     }
 
@@ -73,11 +72,6 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.map.onCreate(savedInstanceState)
-        binding.map.onResume()
-
-        binding.map.getMapAsync(this)
 
         binding.logMeal.setOnClickListener {
             showNewMeal()
@@ -119,7 +113,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         //Creates a coroutine and places markers on map for each meal in database
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mealListViewModel.meals.collect{ meals ->
+                mealMapViewModel.meals.collect{ meals ->
                     for (meal in meals) {
                         val tempLatLng = LatLng(meal.latitude, meal.longitude)
                         placeMarkerOnMap(tempLatLng, meal.title)
@@ -148,7 +142,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 latitude = currentLocation.latitude,
                 longitude = currentLocation.longitude
             )
-            mealRepository.addMeal(newMeal)
+            mealMapViewModel.addMeal(newMeal)
             findNavController().navigate(
                 MealMapFragmentDirections.showMealDetail(newMeal.id)
             )

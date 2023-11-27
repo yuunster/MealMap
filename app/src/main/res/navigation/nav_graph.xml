@@ -5,11 +5,15 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mealMapFragment">
 
+    <action
+        android:id="@id/mealMapFragment"
+        app:destination="@id/mealMapFragment"
+        app:launchSingleTop="true"/>
     <fragment
         android:id="@+id/mealMapFragment"
         android:name="com.bignerdranch.android.nomnommap.MealMapFragment"
         android:label="MealMapFragment"
-        tools:layout="@layout/fragment_meal_map">
+        tools:layout="@layout/fragment_meal_map" >
         <action
             android:id="@+id/show_meal_detail"
             app:destination="@id/mealDetailFragment" />
