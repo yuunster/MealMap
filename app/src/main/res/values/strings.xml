@@ -27,4 +27,7 @@
     <string name="profile">Profile</string>
     <string name="log_out">Log out</string>
     <string name="daily_nutrition"><u>Daily Nutrition</u></string>
+    <string name="settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="max_daily_intake"><u>Max Daily Intake</u></string>
 </resources>

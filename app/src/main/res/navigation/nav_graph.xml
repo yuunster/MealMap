@@ -41,5 +41,17 @@
         android:name="com.bignerdranch.android.nomnommap.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/show_settings"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.bignerdranch.android.nomnommap.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/show_profile"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>
