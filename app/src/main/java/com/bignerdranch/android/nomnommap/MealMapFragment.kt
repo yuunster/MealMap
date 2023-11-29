@@ -130,6 +130,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     }
 
     private fun showNewMeal() {
+        Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
         viewLifecycleOwner.lifecycleScope.launch {
             val newMeal = Meal(
                 id = UUID.randomUUID(),

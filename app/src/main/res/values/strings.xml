@@ -26,4 +26,5 @@
     <string name="click_to_register">Click to register</string>
     <string name="profile">Profile</string>
     <string name="log_out">Log out</string>
+    <string name="daily_nutrition"><u>Daily Nutrition</u></string>
 </resources>
