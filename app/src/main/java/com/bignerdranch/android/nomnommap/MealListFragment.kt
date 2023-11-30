@@ -15,7 +15,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bignerdranch.android.nomnommap.databinding.FragmentMealListBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -50,7 +55,27 @@ class MealListFragment : Fragment() {
                 mealListViewModel.meals.collect{ meals ->
                     binding.mealRecyclerView.adapter =
                         context?.let {
-                            MealListAdapter(meals, it) { mealId ->
+                            val settings = Settings()
+
+                            val auth = Firebase.auth
+                            val db = Firebase.firestore
+                            val docRef = db.collection("users").document(auth.uid.toString())
+                            coroutineScope {
+                                val deferred = async {
+                                 docRef.get()
+                                .addOnSuccessListener { document ->
+                                    if (document != null) {
+                                        settings.calories = document.get("calories")?.toString() ?: ""
+                                        settings.proteins = document.get("proteins")?.toString() ?: ""
+                                        settings.carbs = document.get("carbs")?.toString() ?: ""
+                                        settings.fats = document.get("fats")?.toString() ?: ""
+                                    }
+                                }
+                            }
+                                deferred.await()
+                            }
+
+                            MealListAdapter(meals, it, settings) { mealId ->
                                 findNavController().navigate(
                                     MealListFragmentDirections.showMealDetail(mealId)
                                 )
