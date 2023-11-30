@@ -34,4 +34,6 @@
     <string name="profile_name">Name:</string>
     <string name="profile_email">Email:</string>
     <string name="default_profile_info">[profile info goes here]</string>
+    <string name="user_name">User Name</string>
+    <string name="user_name_edit">User Name:</string>
 </resources>

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bignerdranch.android.nomnommap.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 class RegisterActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class RegisterActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
+        auth = Firebase.auth
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -38,10 +40,16 @@ class RegisterActivity : AppCompatActivity() {
             ActivityRegisterBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        auth = Firebase.auth
+
+        if (intent != null) {
+            binding.email.setText(intent.getStringExtra("email"))
+            binding.password.setText(intent.getStringExtra("password"))
+        }
 
         binding.loginNow.setOnClickListener{
             val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("email", binding.email.text.toString())
+            intent.putExtra("password", binding.password.text.toString())
             startActivity(intent)
         }
 
@@ -49,6 +57,7 @@ class RegisterActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
+            val username = binding.userName.text.toString()
 
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(this@RegisterActivity, "Enter email", Toast.LENGTH_SHORT).show()
@@ -58,18 +67,38 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this@RegisterActivity, "Enter password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if (TextUtils.isEmpty(password)) {
+                Toast.makeText(this@RegisterActivity, "Enter user name", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
-                        Toast.makeText(
-                            this@RegisterActivity,
-                            "Account Created.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        val update = UserProfileChangeRequest.Builder()
+                            .setDisplayName(username)
+                            .build()
+                        auth.currentUser?.updateProfile(update)
+                            ?.addOnSuccessListener {
+                                Toast.makeText(
+                                    this@RegisterActivity,
+                                    "Account Created.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                            ?.addOnFailureListener {
+                                Toast.makeText(
+                                    this@RegisterActivity,
+                                    "Failed to update display name",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.putExtra("email", binding.email.text)
+                        intent.putExtra("password", binding.password.text)
+                        startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(
