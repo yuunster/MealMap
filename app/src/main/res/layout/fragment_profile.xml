@@ -24,41 +24,57 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:text="@string/profile_info"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/profileNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/profile_name"
+                android:fontFamily="sans-serif-black"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/profileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@string/profile_name"
-                android:textSize="15sp"
-                android:textColor="@color/black"/>
+                android:text="@string/default_profile_info"
+                android:textSize="20sp"
+                android:textColor="@color/black">
+            </TextView>
 
-            <EditText
-                android:id="@+id/editProfileName"
+            <TextView
+                android:id="@+id/profileEmailTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:ems="10">
-            </EditText>
+                android:text="@string/profile_email"
+                android:fontFamily="sans-serif-black"
+                android:textSize="20sp"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/profileEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@string/profile_email"
-                android:textSize="15sp"
-                android:textColor="@color/black"/>
-
-            <EditText
-                android:id="@+id/editProfileEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:ems="10">
-            </EditText>
+                android:text="@string/default_profile_info"
+                android:textSize="20sp"
+                android:textColor="@color/black">
+            </TextView>
 
         </LinearLayout>
 
@@ -69,7 +85,8 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +102,8 @@
             android:text="@string/calories"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
 
         <ProgressBar
             android:id="@+id/curCalories"
@@ -104,7 +122,8 @@
             android:text="@string/proteins"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
 
         <ProgressBar
             android:id="@+id/curProteins"
@@ -123,7 +142,8 @@
             android:text="@string/carbs"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
 
         <ProgressBar
             android:id="@+id/curCarbs"
@@ -142,7 +162,8 @@
             android:text="@string/fats"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"/>
 
         <ProgressBar
             android:id="@+id/curFats"
