@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bignerdranch.android.nomnommap.databinding.FragmentSettingsBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -70,6 +71,7 @@ class SettingsFragment : Fragment() {
                 auth.signOut()
                 val intent = Intent(activity?.applicationContext, LoginActivity::class.java)
                 startActivity(intent)
+                activity?.finish()
             }
 
             editCalories.doOnTextChanged { text, _, _, _ ->
@@ -93,22 +95,31 @@ class SettingsFragment : Fragment() {
     }
 
     private fun saveSettings() {
+        val update = UserProfileChangeRequest.Builder()
+            .setDisplayName(binding.editProfileName.text.toString())
+            .build()
+        auth.currentUser?.updateProfile(update)
+
         val db = Firebase.firestore
         db.collection("users").document(auth.uid.toString())
             .set(settings)
     }
     private fun loadSettings() {
+        binding.editProfileName.setText(auth.currentUser?.displayName ?: "")
+
         val db = Firebase.firestore
         val docRef = db.collection("users").document(auth.uid.toString())
         docRef.get()
+            .addOnCompleteListener {
+                binding.loading.visibility = View.GONE
+            }
             .addOnSuccessListener { document ->
                 if (document != null) {
                     binding.apply {
-                        editCalories.setText(document.get("calories").toString())
-                        editProteins.setText(document.get("proteins").toString())
-                        editCarbs.setText(document.get("carbs").toString())
-                        editFats.setText(document.get("fats").toString())
-                        loading.visibility = View.GONE
+                        editCalories.setText(document.get("calories")?.toString() ?: "")
+                        editProteins.setText(document.get("proteins")?.toString() ?: "")
+                        editCarbs.setText(document.get("carbs")?.toString() ?: "")
+                        editFats.setText(document.get("fats")?.toString() ?: "")
                     }
                 }
             }

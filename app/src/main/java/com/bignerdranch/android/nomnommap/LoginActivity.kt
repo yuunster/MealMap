@@ -21,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
+        auth = Firebase.auth
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -38,10 +39,16 @@ class LoginActivity : AppCompatActivity() {
             ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        auth = Firebase.auth
+
+        if (intent != null) {
+            binding.email.setText(intent.getStringExtra("email"))
+            binding.password.setText(intent.getStringExtra("password"))
+        }
 
         binding.registerNow.setOnClickListener{
             val intent = Intent(applicationContext, RegisterActivity::class.java)
+            intent.putExtra("email", binding.email.text.toString())
+            intent.putExtra("password", binding.password.text.toString())
             startActivity(intent)
             finish()
         }

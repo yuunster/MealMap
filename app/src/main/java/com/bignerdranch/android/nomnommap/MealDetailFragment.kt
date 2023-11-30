@@ -3,6 +3,7 @@ package com.bignerdranch.android.nomnommap
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -147,7 +148,7 @@ class MealDetailFragment : Fragment() {
 
             val captureImageIntent = takePhoto.contract.createIntent(
                 requireContext(),
-                null
+                Uri.EMPTY
             )
             pictureButton.isEnabled = canResolveIntent(captureImageIntent)
         }
@@ -187,7 +188,6 @@ class MealDetailFragment : Fragment() {
                     binding.mealPicture.tag = photoFileName
                 }
             } else {
-                binding.mealPicture.setImageBitmap(null)
                 binding.mealPicture.tag = null
             }
         }
