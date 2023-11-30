@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.telecom.QueryLocationException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -81,8 +80,8 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
         binding.logMeal.setOnClickListener {
             lifecycleScope.launch {
-                currentLocation = async { updateLocation() }.await()!!
-                showNewMeal()
+                val location = async { updateLocation() }.await()!!
+                showNewMeal(location)
                 //print latitude and longitude to console
                 Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
             }
@@ -143,9 +142,10 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
         }
         return try {
-            val location = fusedLocationClient.lastLocation.await()
-            return location
-        } catch (e: Exception) { null }
+            return fusedLocationClient.lastLocation.await()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun enableLocation() {
@@ -179,7 +179,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         googleMap.addMarker(markerOptions)
     }
 
-    private fun showNewMeal() {
+    private fun showNewMeal(location: Location) {
         Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
         viewLifecycleOwner.lifecycleScope.launch {
             val newMeal = Meal(
@@ -190,8 +190,8 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 proteins = "",
                 carbs = "",
                 fats = "",
-                latitude = currentLocation.latitude,
-                longitude = currentLocation.longitude
+                latitude = location.latitude,
+                longitude = location.longitude
             )
             mealMapViewModel.addMeal(newMeal)
             findNavController().navigate(
