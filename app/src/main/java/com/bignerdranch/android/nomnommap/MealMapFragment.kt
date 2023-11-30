@@ -74,8 +74,8 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         super.onViewCreated(view, savedInstanceState)
 
         binding.logMeal.setOnClickListener {
+            updateLocation()
             showNewMeal()
-
             //print latitude and longitude to console
             Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
         }
@@ -119,6 +119,21 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                         placeMarkerOnMap(tempLatLng, meal.title)
                     }
                 }
+            }
+        }
+    }
+
+    private fun updateLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
+            if (location != null){
+                currentLocation = location
             }
         }
     }
