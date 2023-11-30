@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.telecom.QueryLocationException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 import java.util.Date
 import java.util.UUID
 
@@ -76,10 +80,12 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         super.onViewCreated(view, savedInstanceState)
 
         binding.logMeal.setOnClickListener {
-            updateLocation()
-            showNewMeal()
-            //print latitude and longitude to console
-            Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
+            lifecycleScope.launch {
+                currentLocation = async { updateLocation() }.await()!!
+                showNewMeal()
+                //print latitude and longitude to console
+                Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
+            }
         }
     }
 
@@ -129,19 +135,17 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         }
     }
 
-    private fun updateLocation() {
+    private suspend fun updateLocation() : Location? {
         if (ActivityCompat.checkSelfPermission(
                 requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
-            return
         }
-        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
-            if (location != null){
-                currentLocation = location
-            }
-        }
+        return try {
+            val location = fusedLocationClient.lastLocation.await()
+            return location
+        } catch (e: Exception) { null }
     }
 
     private fun enableLocation() {
