@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,7 +31,8 @@ import java.util.Date
 import java.util.UUID
 
 
-class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+    GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private lateinit var googleMap: GoogleMap
     private var mapFragment: SupportMapFragment? = null
     private lateinit var currentLocation: Location
@@ -74,8 +76,8 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         super.onViewCreated(view, savedInstanceState)
 
         binding.logMeal.setOnClickListener {
+            updateLocation()
             showNewMeal()
-
             //print latitude and longitude to console
             Log.d("TEST", "${currentLocation.latitude} and ${currentLocation.longitude}")
         }
@@ -89,6 +91,10 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener(this)
 
+        googleMap.setOnMyLocationButtonClickListener(this)
+        googleMap.setOnMyLocationClickListener(this)
+
+        enableLocation()
         setUpMap()
     }
 
@@ -122,6 +128,46 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             }
         }
     }
+
+    private fun updateLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
+            if (location != null){
+                currentLocation = location
+            }
+        }
+    }
+
+    private fun enableLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+            return
+        }
+        googleMap.isMyLocationEnabled = true
+    }
+
+    override fun onMyLocationButtonClick(): Boolean {
+        Toast.makeText(requireContext(), "MyLocation button clicked", Toast.LENGTH_SHORT)
+            .show()
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false
+    }
+
+    override fun onMyLocationClick(location: Location) {
+        Toast.makeText(requireContext(), "Current location:\n${location.latitude}, ${location.longitude}", Toast.LENGTH_LONG)
+            .show()
+    }
+
 
     private fun placeMarkerOnMap(currentLatLong: LatLng, name: String) {
         val markerOptions = MarkerOptions().position(currentLatLong)

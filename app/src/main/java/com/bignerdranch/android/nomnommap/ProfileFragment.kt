@@ -1,5 +1,8 @@
 package com.bignerdranch.android.nomnommap
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.opengl.Visibility
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -8,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -42,6 +46,7 @@ class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
+        enableLocation()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -206,5 +211,21 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun enableLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                ProfileFragment.LOCATION_REQUEST_CODE
+            )
+            return
+        }
+    }
+
+    companion object{
+        private const val LOCATION_REQUEST_CODE = 1
     }
 }
