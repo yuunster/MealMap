@@ -154,6 +154,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:cropToPadding="true"
+                android:scaleType="centerCrop"
                 android:background="@color/dark_green"
                 android:src="@drawable/ic_food_picture"/>
 

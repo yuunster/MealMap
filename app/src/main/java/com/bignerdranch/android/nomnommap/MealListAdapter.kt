@@ -1,6 +1,7 @@
 package com.bignerdranch.android.nomnommap
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,12 @@ class MealHolder(
         binding.proteins.max = settings.proteins.toIntOrNull() ?: 100
         binding.carbs.max = settings.carbs.toIntOrNull() ?: 100
         binding.fats.max = settings.fats.toIntOrNull() ?: 100
+        Log.d("TEST", "setings calories: ${settings.calories.toIntOrNull()}")
+        Log.d("TEST", "increment calories: ${meal.calories.toIntOrNull()}")
+        binding.calories.incrementProgressBy(meal.calories.toIntOrNull() ?: 0)
+        binding.proteins.incrementProgressBy(meal.proteins.toIntOrNull() ?: 0)
+        binding.carbs.incrementProgressBy(meal.carbs.toIntOrNull() ?: 0)
+        binding.fats.incrementProgressBy(meal.fats.toIntOrNull() ?: 0)
         updatePhoto(meal.photoFileName)
 
         binding.root.setOnClickListener {
