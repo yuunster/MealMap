@@ -2,9 +2,7 @@ package com.bignerdranch.android.nomnommap
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
