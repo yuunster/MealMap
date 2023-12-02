@@ -22,9 +22,9 @@ import com.bignerdranch.android.nomnommap.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
@@ -32,10 +32,11 @@ import java.util.Date
 import java.util.Locale
 
 class ProfileFragment : Fragment() {
-    private var auth: FirebaseAuth = Firebase.auth
+    private lateinit var auth: FirebaseAuth
     private var _binding: FragmentProfileBinding? = null
     private val profileViewModel: ProfileViewModel by viewModels()
     private var storage = Firebase.storage
+    private lateinit var settings: Settings
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -44,21 +45,32 @@ class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
-        enableLocation()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding =
             FragmentProfileBinding.inflate(layoutInflater, container, false)
-        binding.loading.visibility = View.VISIBLE
+
         updatePhoto()
-        viewLifecycleOwner.lifecycleScope.launch {
-            loadSettings()
-            calculateDaily()
+
+        // Load settings from MainActivity and calculate dailies
+        binding.loading.visibility = View.VISIBLE
+        viewLifecycleOwner.lifecycleScope.launch() {
+            settings = MainActivity().loadSettings()
+            binding.apply {
+                userName.text = settings.username
+                curCalories.max = settings.calories.toIntOrNull() ?: 0
+                curProteins.max = settings.proteins.toIntOrNull() ?: 0
+                curCarbs.max = settings.carbs.toIntOrNull() ?: 0
+                curFats.max = settings.fats.toIntOrNull() ?: 0
+                binding.loading.visibility = View.GONE
+            }
         }
+        calculateDaily()
+
         return binding.root
     }
 
@@ -168,29 +180,8 @@ class ProfileFragment : Fragment() {
         return resolvedActivity != null
     }
 
-    private fun loadSettings() {
-        binding.userName.text = auth.currentUser?.displayName ?: ""
-
-        val db = Firebase.firestore
-        val docRef = db.collection("users").document(auth.uid.toString())
-        docRef.get()
-            .addOnCompleteListener {
-                binding.loading.visibility = View.GONE
-            }
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    binding.apply {
-                        curCalories.max = document.get("calories").toString().toIntOrNull() ?: 0
-                        curProteins.max = document.get("proteins").toString().toIntOrNull() ?: 0
-                        curCarbs.max = document.get("carbs").toString().toIntOrNull() ?: 0
-                        curFats.max = document.get("fats").toString().toIntOrNull() ?: 0
-                    }
-                }
-            }
-    }
-
     private fun calculateDaily() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             profileViewModel.meals.collect { meals ->
                 val currentDate = Date()
                 val formattedDate = SimpleDateFormat("MMM dd yyyy", Locale.US)
@@ -204,22 +195,9 @@ class ProfileFragment : Fragment() {
                             curCarbs.incrementProgressBy(meal.carbs.toIntOrNull() ?: 0)
                             curFats.incrementProgressBy(meal.fats.toIntOrNull() ?: 0)
                         }
-
                     }
                 }
             }
-        }
-    }
-
-    private fun enableLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                ProfileFragment.LOCATION_REQUEST_CODE
-            )
-            return
         }
     }
 

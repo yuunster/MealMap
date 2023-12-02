@@ -51,7 +51,7 @@ class MealDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding =
             FragmentMealDetailBinding.inflate(layoutInflater, container, false)
         return binding.root

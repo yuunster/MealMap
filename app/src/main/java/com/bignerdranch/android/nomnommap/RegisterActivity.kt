@@ -3,9 +3,7 @@ package com.bignerdranch.android.nomnommap
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
@@ -22,16 +20,6 @@ class RegisterActivity : AppCompatActivity() {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    public override fun onStart() {
-        super.onStart()
-        auth = Firebase.auth
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(supportActionBar!=null)
@@ -41,16 +29,27 @@ class RegisterActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        auth = Firebase.auth
+
+        val intentLoginActivity = Intent(this, LoginActivity::class.java)
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Check if received intent from other activities
         if (intent != null) {
             binding.email.setText(intent.getStringExtra("email"))
             binding.password.setText(intent.getStringExtra("password"))
         }
 
         binding.loginNow.setOnClickListener{
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("email", binding.email.text.toString())
-            intent.putExtra("password", binding.password.text.toString())
-            startActivity(intent)
+            intentLoginActivity.putExtra("email", binding.email.text.toString())
+            intentLoginActivity.putExtra("password", binding.password.text.toString())
+            startActivity(intentLoginActivity)
         }
 
         binding.btnRegister.setOnClickListener {
@@ -95,10 +94,9 @@ class RegisterActivity : AppCompatActivity() {
                                 ).show()
                             }
                         // Sign in success, update UI with the signed-in user's information
-                        val intent = Intent(this, LoginActivity::class.java)
-                        intent.putExtra("email", binding.email.text)
-                        intent.putExtra("password", binding.password.text)
-                        startActivity(intent)
+                        intentLoginActivity.putExtra("email", binding.email.text)
+                        intentLoginActivity.putExtra("password", binding.password.text)
+                        startActivity(intentLoginActivity)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(

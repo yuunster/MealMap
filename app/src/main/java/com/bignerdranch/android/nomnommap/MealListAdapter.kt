@@ -3,14 +3,10 @@ package com.bignerdranch.android.nomnommap
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.android.nomnommap.databinding.ListItemMealBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale

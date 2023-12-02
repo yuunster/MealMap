@@ -19,18 +19,6 @@ class LoginActivity : AppCompatActivity() {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    public override fun onStart() {
-        super.onStart()
-        auth = Firebase.auth
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            val intent = Intent(applicationContext,MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(supportActionBar!=null)
@@ -40,6 +28,17 @@ class LoginActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        auth = Firebase.auth
+        val intentMainActivity = Intent(applicationContext,MainActivity::class.java)
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            startActivity(intentMainActivity)
+            finish()
+        }
+
+        // Check if received intent from other activities
         if (intent != null) {
             binding.email.setText(intent.getStringExtra("email"))
             binding.password.setText(intent.getStringExtra("password"))
@@ -77,9 +76,7 @@ class LoginActivity : AppCompatActivity() {
                             "Login Successful",
                             Toast.LENGTH_SHORT,
                         ).show()
-                        val user = auth.currentUser
-                        val intent = Intent(applicationContext,MainActivity::class.java)
-                        startActivity(intent)
+                        startActivity(intentMainActivity)
                         finish()
                     } else {
                         // If sign in fails, display a message to the user.
