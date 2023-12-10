@@ -42,6 +42,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var _binding: FragmentMealMapBinding? = null
     private val mealMapViewModel: MealMapViewModel by viewModels()
+
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -60,7 +61,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding =
             FragmentMealMapBinding.inflate(layoutInflater, container, false)
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -108,8 +109,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
-            return
+            enableLocation()
         }
         googleMap.isMyLocationEnabled = true
         fusedLocationClient.lastLocation.addOnSuccessListener(this.requireActivity()) { location ->
@@ -117,7 +117,7 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 currentLocation = location
                 val currentLatLong = LatLng(location.latitude, location.longitude)
                 //placeMarkerOnMap(currentLatLong)
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 12f))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 12f))
             }
         }
 
@@ -153,7 +153,6 @@ class MealMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                 requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
             return
         }
         googleMap.isMyLocationEnabled = true

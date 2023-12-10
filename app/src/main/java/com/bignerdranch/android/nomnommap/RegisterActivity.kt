@@ -11,6 +11,7 @@ import com.bignerdranch.android.nomnommap.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -75,11 +76,19 @@ class RegisterActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     binding.progressBar.visibility = View.GONE
                     if (task.isSuccessful) {
+                        val settings = Settings(username = username, calories = "100", proteins = "100", carbs = "100", fats = "100");
+                        val db = Firebase.firestore
+                        db.collection("users").document(auth.uid.toString())
+                            .set(settings)
                         val update = UserProfileChangeRequest.Builder()
                             .setDisplayName(username)
                             .build()
                         auth.currentUser?.updateProfile(update)
                             ?.addOnSuccessListener {
+                                // Sign in success, update UI with the signed-in user's information
+                                intentLoginActivity.putExtra("email", binding.email.text)
+                                intentLoginActivity.putExtra("password", binding.password.text)
+                                startActivity(intentLoginActivity)
                                 Toast.makeText(
                                     this@RegisterActivity,
                                     "Account Created.",
@@ -93,10 +102,6 @@ class RegisterActivity : AppCompatActivity() {
                                     Toast.LENGTH_SHORT,
                                 ).show()
                             }
-                        // Sign in success, update UI with the signed-in user's information
-                        intentLoginActivity.putExtra("email", binding.email.text)
-                        intentLoginActivity.putExtra("password", binding.password.text)
-                        startActivity(intentLoginActivity)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(
